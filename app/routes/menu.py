@@ -5,7 +5,8 @@ from typing import Annotated
 from utils import get_current_active_user
 import datetime
 
-import models, schemas
+import models
+import schemas
 from database import get_db
 
 
@@ -45,7 +46,10 @@ async def get_all(
     db: Session = Depends(get_db)
 ):
     menus = db.query(models.Menu).all()
-    return {'message': 'Successfully retreived', 'results': len(menus), 'menus': menus}
+    return {
+        'message': 'Successfully retreived',
+        'results': len(menus), 'menus': menus
+    }
 
 
 @router.get("/{day}", status_code=status.HTTP_200_OK, name="menu_get_by_day")
@@ -58,4 +62,8 @@ async def get_by_day(
     for menu in menus:
         menu.items = db.query(models.MenuItem).filter_by(menu_id=menu.id).all()
 
-    return {'message': 'Successfully retreived', 'results': len(menus), 'menus': menus}
+    return {
+        'message': 'Successfully retreived',
+        'results': len(menus),
+        'menus': menus
+    }

@@ -4,14 +4,19 @@ from sqlalchemy import exc
 from typing import Annotated
 from utils import get_current_active_user
 
-import models, schemas
+import models
+import schemas
 from database import get_db
 
 
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, name="restaurant_create")
+@router.post(
+    path="/",
+    status_code=status.HTTP_201_CREATED,
+    name="restaurant_create"
+)
 async def create_restaurant(
     payload: schemas.Restaurant,
     response: Response,

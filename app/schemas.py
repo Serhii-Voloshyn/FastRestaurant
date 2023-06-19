@@ -1,22 +1,22 @@
 from datetime import date
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class User(BaseModel):
-    username: str
+    username: str = Field(min_length=1)
     email: EmailStr
     full_name: str | None
-    password: str
+    password: str = Field(min_length=8)
 
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    access_token: str | None
+    token_type: str | None
     username: str | None = None
 
 
 class Restaurant(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
 
 
 class Menu(BaseModel):
@@ -25,7 +25,7 @@ class Menu(BaseModel):
 
 
 class Employee(BaseModel):
-    full_name: str
+    full_name: str = Field(min_length=1)
     email: EmailStr
 
 

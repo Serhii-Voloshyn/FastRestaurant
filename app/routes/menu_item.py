@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import exc
 from typing import Annotated
 from utils import get_current_active_user
-import datetime
 
-import models, schemas
+import models
+import schemas
 from database import get_db
 
 
