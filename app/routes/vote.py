@@ -4,9 +4,9 @@ from sqlalchemy import exc
 from sqlalchemy.sql import func
 from typing import Annotated
 from utils import get_current_active_user
-import datetime
 
-import models, schemas
+import models
+import schemas
 from database import get_db
 
 
@@ -36,7 +36,9 @@ async def create_vote(
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": "Employee doesn't exist", "vote": vote_dict}
 
-    employee_votes = db.query(models.Vote).filter_by(employee_id=employee_id, menu_id=menu_id).all()
+    employee_votes = db.query(models.Vote).filter_by(
+        employee_id=employee_id, menu_id=menu_id
+        ).all()
 
     if employee_votes:
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -55,7 +57,11 @@ async def create_vote(
     return {"message": "Successfully created", "vote": vote_dict}
 
 
-@router.get("/{menu_id}", status_code=status.HTTP_201_CREATED, name="vote_get_by_menu")
+@router.get(
+    path="/{menu_id}",
+    status_code=status.HTTP_201_CREATED,
+    name="vote_get_by_menu"
+)
 async def get_vote_by_menu(
     menu_id: int,
     response: Response,
@@ -69,6 +75,8 @@ async def get_vote_by_menu(
         return {"message": "Menu doesn't exist"}
 
     votes = db.query(models.Vote).filter_by(menu_id=menu_id).all()
-    avg = db.query(func.avg(models.Vote.score)).filter_by(menu_id=menu_id).one()
+    avg = db.query(
+        func.avg(models.Vote.score)
+    ).filter_by(menu_id=menu_id).one()
 
     return {"message": "Successfully retreived", "vote": votes, "avg": avg[0]}
